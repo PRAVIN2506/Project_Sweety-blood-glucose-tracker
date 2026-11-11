@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 
+import authRoutes from "./routes/auth.routes.js";
+
 const app = express();
 
 // Security middleware
@@ -26,11 +28,25 @@ app.get("/api/health", (req, res) => {
     });
 });
 
+app.use("/api/auth", authRoutes);
+
 // Handle unknown routes
 app.use((req, res) => {
     res.status(404).json({
         success: false,
         message: "Route not found",
+    });
+});
+
+app.use((err, req, res, next) => {
+    console.error(err);
+
+    res.status(err.statusCode || 500).json({
+        success: false,
+        message:
+            err.statusCode && err.statusCode < 500
+                ? err.message
+                : "Internal server error.",
     });
 });
 
