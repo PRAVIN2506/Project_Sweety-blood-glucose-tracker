@@ -3,6 +3,7 @@ import cors from "cors";
 import helmet from "helmet";
 
 import authRoutes from "./routes/auth.routes.js";
+import readingRoutes from "./routes/reading.routes.js";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.get("/api/health", (req, res) => {
 });
 
 app.use("/api/auth", authRoutes);
+app.use("/api/readings", readingRoutes);
 
 // Handle unknown routes
 app.use((req, res) => {
