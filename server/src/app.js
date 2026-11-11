@@ -4,6 +4,7 @@ import helmet from "helmet";
 
 import authRoutes from "./routes/auth.routes.js";
 import readingRoutes from "./routes/reading.routes.js";
+import reportRoutes from "./routes/report.routes.js";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.get("/api/health", (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/readings", readingRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Handle unknown routes
 app.use((req, res) => {
