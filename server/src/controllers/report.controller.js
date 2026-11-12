@@ -8,7 +8,7 @@ export const dailyReport = async (req, res, next) => {
     try {
         const report = await getDailyReport(
             req.user.userId,
-            req.query.date
+            res.locals.validatedQuery.date
         );
 
         return res.status(200).json({
@@ -28,7 +28,7 @@ export const monthToDateReport = async (req, res, next) => {
     try {
         const report = await getMonthToDateReport(
             req.user.userId,
-            req.query.date
+            res.locals.validatedQuery.date
         );
 
         return res.status(200).json({
@@ -48,7 +48,7 @@ export const monthlyReport = async (req, res, next) => {
     try {
         const report = await getMonthlyReport(
             req.user.userId,
-            req.query.date
+            res.locals.validatedQuery.date
         );
 
         return res.status(200).json({
