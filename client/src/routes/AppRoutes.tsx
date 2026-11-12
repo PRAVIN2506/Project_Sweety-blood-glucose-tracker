@@ -11,13 +11,13 @@ import { useAppSelector } from "../hooks/useAppSelector";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
+import ReadingsPage from "../pages/ReadingsPage";
 
-// Protected route
-function ProtectedRoute({
-    children,
-}: {
+interface ProtectedRouteProps {
     children: ReactNode;
-}) {
+}
+
+function ProtectedRoute({ children }: ProtectedRouteProps) {
     const isAuthenticated = useAppSelector(
         (state) => state.auth.isAuthenticated
     );
@@ -28,8 +28,10 @@ function ProtectedRoute({
 
     if (isInitializing) {
         return (
-            <div className="flex min-h-screen items-center justify-center">
-                Checking your session...
+            <div className="flex min-h-screen items-center justify-center bg-slate-50">
+                <p className="text-slate-500">
+                    Checking your session...
+                </p>
             </div>
         );
     }
@@ -39,7 +41,6 @@ function ProtectedRoute({
         : <Navigate to="/login" replace />;
 }
 
-// Application routes
 function AppRoutes() {
     const isAuthenticated = useAppSelector(
         (state) => state.auth.isAuthenticated
@@ -51,15 +52,16 @@ function AppRoutes() {
 
     if (isInitializing) {
         return (
-            <div className="flex min-h-screen items-center justify-center">
-                Checking your session...
+            <div className="flex min-h-screen items-center justify-center bg-slate-50">
+                <p className="text-slate-500">
+                    Checking your session...
+                </p>
             </div>
         );
     }
 
     return (
         <Routes>
-            {/* Login */}
             <Route
                 path="/login"
                 element={
@@ -69,7 +71,6 @@ function AppRoutes() {
                 }
             />
 
-            {/* Registration */}
             <Route
                 path="/register"
                 element={
@@ -79,7 +80,6 @@ function AppRoutes() {
                 }
             />
 
-            {/* Protected dashboard */}
             <Route
                 path="/dashboard"
                 element={
@@ -89,7 +89,15 @@ function AppRoutes() {
                 }
             />
 
-            {/* Default route */}
+            <Route
+                path="/readings"
+                element={
+                    <ProtectedRoute>
+                        <ReadingsPage />
+                    </ProtectedRoute>
+                }
+            />
+
             <Route
                 path="/"
                 element={
@@ -100,7 +108,6 @@ function AppRoutes() {
                 }
             />
 
-            {/* Unknown routes */}
             <Route
                 path="*"
                 element={<Navigate to="/" replace />}
