@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent } from "react";
+import { useState, type FormEvent } from "react";
 import type {
     CreateReadingInput,
     Reading,
@@ -45,13 +45,6 @@ function ReadingForm({
         initialReading ? String(initialReading.value) : ""
     );
     const [error, setError] = useState("");
-
-    useEffect(() => {
-        setDate(initialReading?.date.slice(0, 10) || getToday());
-        setSlot(initialReading?.slot || "MORNING");
-        setValue(initialReading ? String(initialReading.value) : "");
-        setError("");
-    }, [initialReading]);
 
     const usedSlots = readings
         .filter(

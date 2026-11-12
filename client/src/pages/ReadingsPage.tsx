@@ -193,6 +193,7 @@ function ReadingsPage() {
                 {/* Add/Edit form */}
                 {showForm && (
                     <ReadingForm
+                        key={editingReading?.id ?? "new"}
                         initialReading={editingReading}
                         readings={readings}
                         loading={mutationStatus === "loading"}
