@@ -9,6 +9,11 @@ import {
 import { protect } from "../middleware/auth.middleware.js";
 
 import {
+    registerRateLimiter,
+    loginRateLimiter,
+} from "../middleware/authRateLimit.middleware.js";
+
+import {
     registerSchema,
     loginSchema,
 } from "../validators/auth.validator.js";
@@ -33,9 +38,20 @@ const validate = (schema) => (req, res, next) => {
     next();
 };
 
-router.post("/register", validate(registerSchema), register);
+// Rate limiter runs before validation and controller execution.
+router.post(
+    "/register",
+    registerRateLimiter,
+    validate(registerSchema),
+    register
+);
 
-router.post("/login", validate(loginSchema), login);
+router.post(
+    "/login",
+    loginRateLimiter,
+    validate(loginSchema),
+    login
+);
 
 router.get("/me", protect, me);
 
