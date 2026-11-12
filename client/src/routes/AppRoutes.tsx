@@ -12,6 +12,7 @@ import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
 import DashboardPage from "../pages/DashboardPage";
 import ReadingsPage from "../pages/ReadingsPage";
+import ReportsPage from "../pages/ReportsPage";
 
 interface ProtectedRouteProps {
     children: ReactNode;
@@ -94,6 +95,15 @@ function AppRoutes() {
                 element={
                     <ProtectedRoute>
                         <ReadingsPage />
+                    </ProtectedRoute>
+                }
+            />
+
+            <Route
+                path="/reports"
+                element={
+                    <ProtectedRoute>
+                        <ReportsPage />
                     </ProtectedRoute>
                 }
             />
