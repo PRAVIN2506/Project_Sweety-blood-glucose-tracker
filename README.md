@@ -1,101 +1,43 @@
-# Sweety – Blood Glucose Tracker
+# Sweety - Blood Glucose Tracker
 
-A full-stack blood glucose tracking application that allows users to securely record, manage, and monitor daily glucose readings through a dashboard and reporting interface.
+Sweety is a full-stack web application for recording daily blood glucose readings and viewing summaries over different date ranges.
+
+It was built as a take-home assignment for the Junior Full Stack Developer role at Kenpath.
 
 ## Features
 
-### Authentication
-- User registration and login.
-- Password hashing using bcrypt.
-- JWT-based authentication.
-- User-specific reading access.
-- Authentication rate limiting.
+- Register and log in with an email and password.
+- Passwords are hashed with bcrypt.
+- Each user can access only their own readings.
+- Add, view, edit, and delete glucose readings.
+- Record readings in four daily slots: morning fasting, after breakfast, after lunch, and after dinner.
+- Accept whole-number values from 40 to 600 mg/dL.
+- Allow no more than one reading per slot per day and four readings per day.
+- Reject future dates using the user's IANA timezone.
+- View daily, month-to-date, and previous-month reports.
+- Show the highest, lowest, average, and total number of readings.
+- Provide toast notifications and confirmation before deleting a reading.
 
-### Glucose Readings
-- Create, view, update, and delete readings.
-- Four daily reading slots:
-  - Morning fasting
-  - After breakfast
-  - After lunch
-  - After dinner
-- Glucose values restricted to 40–600 mg/dL.
-- Maximum of four readings per day.
-- One reading per slot per day.
-- Future dates are not allowed.
+## Technology
 
-### Reports
-- Daily report for a selected date.
-- Month-to-date report.
-- Previous calendar month's report.
-- Highest and lowest glucose readings.
-- Average glucose reading, rounded to one decimal place.
-- Total reading count.
-- Empty-state handling when no readings exist.
+- Frontend: React, TypeScript, Vite, Redux Toolkit, React Router, Tailwind CSS, Axios
+- Backend: Node.js, Express
+- Database: PostgreSQL
+- ORM: Prisma
+- Validation: Zod
+- Authentication: JWT and bcryptjs
+- Tests: Jest and Supertest
 
-## Technology Stack
+Use the package files (`client/package.json` and `server/package.json`) for the exact dependency versions.
 
-| Layer | Technologies |
-|---|---|
-| Frontend | React, TypeScript, Vite |
-| Styling | Tailwind CSS |
-| State management | Redux Toolkit |
-| Routing | React Router |
-| HTTP client | Axios |
-| Backend | Node.js, Express.js |
-| Database | PostgreSQL |
-| ORM | Prisma |
-| Authentication | JWT, bcryptjs |
-| Validation | Zod |
-| Testing | Jest, Supertest |
+## Requirements
 
-## Project Structure
+- Node.js 20 or later
+- npm 10 or later
+- PostgreSQL 15 or later
+- Git
 
-```text
-sweety-blood-glucose-tracker/
-├── client/
-│   ├── src/
-│   │   ├── app/
-│   │   ├── features/
-│   │   │   ├── auth/
-│   │   │   ├── readings/
-│   │   │   └── reports/
-│   │   ├── hooks/
-│   │   ├── pages/
-│   │   ├── routes/
-│   │   └── services/
-│   └── .env.example
-│
-├── server/
-│   ├── prisma/
-│   │   ├── migrations/
-│   │   ├── schema.prisma
-│   │   └── seed.js
-│   ├── src/
-│   │   ├── config/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── routes/
-│   │   ├── services/
-│   │   ├── utils/
-│   │   └── validators/
-│   ├── tests/
-│   └── .env.example
-│
-├── docs/
-├── .gitignore
-└── README.md
-```
-
-## Prerequisites
-
-Install the following before setting up the project:
-
-- Node.js (v22 or compatible supported version).
-- npm.
-- PostgreSQL.
-- Git.
-
-## Installation and Setup
+## Setup
 
 ### 1. Clone the repository
 
@@ -104,101 +46,58 @@ git clone https://github.com/PRAVIN2506/Project_Sweety-blood-glucose-tracker.git
 cd Project_Sweety-blood-glucose-tracker
 ```
 
-### 2. Create the PostgreSQL database
+### 2. Create the databases
 
-Open PostgreSQL or `psql` and execute:
+Create two PostgreSQL databases:
 
 ```sql
 CREATE DATABASE sweety_db;
+CREATE DATABASE sweety_test_db;
 ```
 
-### 3. Configure the backend
+### 3. Configure and start the backend
 
-Navigate to the server directory:
+Open a terminal in the project directory:
 
-```bash
+```powershell
 cd server
 npm install
-```
-
-Create your local environment file:
-
-**PowerShell:**
-```powershell
 Copy-Item .env.example .env
 ```
 
-Update `server/.env` with your PostgreSQL credentials and a secure JWT secret:
+Edit `server/.env` and set your local PostgreSQL password and a private JWT secret:
 
 ```env
 PORT=5000
 NODE_ENV=development
 CLIENT_URL=http://localhost:5173
-
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/sweety_db
-
-JWT_SECRET=YOUR_SECURE_RANDOM_SECRET
-JWT_EXPIRES_IN=1d
+DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/sweety_db?schema=public"
+JWT_SECRET="replace_with_a_long_random_secret"
+JWT_EXPIRES_IN="1d"
 ```
 
-Replace `YOUR_PASSWORD` and `YOUR_SECURE_RANDOM_SECRET` with your actual values.
+Apply the database migrations and insert the demo data:
 
-### 4. Apply database migrations
-
-From the `server` directory:
-
-```bash
+```powershell
 npx prisma migrate deploy
-```
-
-This applies the committed database migrations.
-
-### 5. Seed demo data
-
-```bash
 npx prisma db seed
 ```
 
-The seed script creates a demo account and sample glucose readings.
+Start the backend:
 
-**Demo account:**
-
-| Field | Value |
-|---|---|
-| Email | demo@sweetytracker.com |
-| Password | SweetyDemo@2026 |
-
-The seed script is idempotent: running it again does not create duplicate demo users or readings.
-
-This account is intended for local development and demonstration only.
-
-### 6. Start the backend
-
-```bash
+```powershell
 npm run dev
 ```
 
-Backend URL:
+The API runs at `http://localhost:5000`. Health check: `http://localhost:5000/api/health`.
 
-`http://localhost:5000`
+### 4. Configure and start the frontend
 
-Health check:
+Open a second terminal in the project directory:
 
-`http://localhost:5000/api/health`
-
-### 7. Configure the frontend
-
-Open a second terminal and navigate to the project root:
-
-```bash
+```powershell
 cd client
 npm install
-```
-
-Create the frontend environment file:
-
-**PowerShell:**
-```powershell
 Copy-Item .env.example .env
 ```
 
@@ -208,138 +107,117 @@ The `client/.env` file should contain:
 VITE_API_URL=http://localhost:5000/api
 ```
 
-### 8. Start the frontend
+Start the frontend:
 
-```bash
+```powershell
 npm run dev
 ```
 
-Frontend URL:
+Open `http://localhost:5173`.
 
-`http://localhost:5173`
+## Demo account
 
-The application is now available in your browser.
+The seed script creates this demo account:
 
-## Running Tests
+| Field | Value |
+|---|---|
+| Email | `demo@sweetytracker.com` |
+| Password | `SweetyDemo@2026` |
 
-The backend uses Jest and Supertest for automated API integration tests.
+The seed script inserts sample readings for two previous days. It is safe to run more than once and refuses to run when `NODE_ENV=production`.
 
-### 1. Create a dedicated test database
+## API overview
 
-Create a separate PostgreSQL database:
+Protected endpoints require this header:
 
-```sql
-CREATE DATABASE sweety_test_db;
+```text
+Authorization: Bearer <token>
 ```
 
-**Do not use the development database for automated tests.**
+Reading create and update requests also use:
 
-### 2. Configure the test environment
+```text
+X-Time-Zone: <IANA time zone>
+```
 
-From the `server` directory, create the test environment file:
+| Method | Endpoint | Purpose |
+|---|---|---|
+| GET | `/api/health` | Check API status |
+| POST | `/api/auth/register` | Register an account |
+| POST | `/api/auth/login` | Log in |
+| GET | `/api/auth/me` | Get the current user |
+| GET | `/api/readings` | List the current user's readings |
+| GET | `/api/readings/:id` | Get one reading |
+| POST | `/api/readings` | Create a reading |
+| PUT | `/api/readings/:id` | Update a reading |
+| DELETE | `/api/readings/:id` | Delete a reading |
+| GET | `/api/reports/daily?date=YYYY-MM-DD` | Daily report |
+| GET | `/api/reports/month-to-date?date=YYYY-MM-DD` | Month-to-date report |
+| GET | `/api/reports/monthly?date=YYYY-MM-DD` | Previous calendar month report |
+
+## Tests and checks
+
+### Backend
+
+The test suite uses the separate `sweety_test_db` database. Create `server/.env.test` by copying `server/.env`, then change `DATABASE_URL` to point to `sweety_test_db`.
+
+Before running tests for the first time, apply migrations to the test database. In PowerShell, from `server`:
 
 ```powershell
-Copy-Item .env .env.test
-```
-
-Edit `server/.env.test` and change `DATABASE_URL` to point to `sweety_test_db`.
-
-For example:
-
-```env
-DATABASE_URL=postgresql://postgres:YOUR_PASSWORD@localhost:5432/sweety_test_db
-```
-
-Keep a valid `JWT_SECRET` in this file.
-
-### 3. Apply migrations to the test database
-
-In PowerShell, from the `server` directory:
-
-```powershell
-$env:DATABASE_URL = "postgresql://postgres:YOUR_PASSWORD@localhost:5432/sweety_test_db"
-
+$env:DATABASE_URL="postgresql://postgres:YOUR_PASSWORD@localhost:5432/sweety_test_db?schema=public"
 npx prisma migrate deploy
-
 Remove-Item Env:DATABASE_URL
 ```
 
-Replace the connection details with your own PostgreSQL credentials.
+Then run:
 
-### 4. Run the tests
-
-```bash
+```powershell
 npm test
+npx prisma validate
 ```
 
-The test suite covers:
+The test setup checks that `DATABASE_URL` points to `sweety_test_db` before running tests.
 
-- Database connectivity.
-- Health check and unknown routes.
-- User registration and login.
-- Authentication and authorization.
-- Reading CRUD operations.
-- Reading validation and daily limits.
-- Concurrent reading creation.
-- Daily, month-to-date, and monthly reports.
-- User data isolation.
+### Frontend
 
-Tests use the dedicated `sweety_test_db` database and clean up their test data.
+From `client`:
 
-## API Endpoints
+```powershell
+npm run lint
+npm run build
+```
 
-All endpoints are prefixed with `/api`.
+## Screenshots
 
-### Health
+The screenshots are in [`docs/screenshots/`](docs/screenshots/):
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/health` | API health check |
+1. Login
+2. Registration
+3. Dashboard
+4. Readings list
+5. Reading form
+6. Delete confirmation
+7. Daily report
+8. Month-to-date report
+9. Previous-month report
+10. Toast notification
 
-### Authentication
+## Notes: assumptions and trade-offs
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/auth/register` | Register a user |
-| POST | `/auth/login` | Authenticate a user |
-| GET | `/auth/me` | Get the authenticated user |
+- A reading's date is a calendar date, not a timestamp. The database stores it as a PostgreSQL `DATE`.
+- The frontend sends the user's IANA timezone in the `X-Time-Zone` header. The backend uses it to reject dates that are in the future for that timezone. If the header is missing, the backend uses UTC.
+- The four reading slots are fixed. A user can record at most one reading in each slot per day.
+- JWTs are stateless and expire after one day. Logging out clears the client-side session; it does not revoke an already-issued token on the server.
+- Authentication rate limiting uses an in-memory store, which is suitable for a single server instance. A multi-instance deployment would need shared rate-limit storage.
 
-### Readings
+## Improvements with more time
 
-All reading endpoints require a valid JWT.
+- Add frontend component and interaction tests.
+- Add pagination for long reading histories.
+- Add an optional monthly trend chart.
+- Add Docker Compose for local setup.
+- Improve deployment configuration and centralized monitoring.
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/readings` | Create a reading |
-| GET | `/readings` | List readings |
-| GET | `/readings/:id` | Get a reading |
-| PUT | `/readings/:id` | Update a reading |
-| DELETE | `/readings/:id` | Delete a reading |
+## Scope
 
-### Reports
-
-All report endpoints require a valid JWT and a valid `date` query parameter in `YYYY-MM-DD` format.
-
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/reports/daily?date=YYYY-MM-DD` | Daily report |
-| GET | `/reports/month-to-date?date=YYYY-MM-DD` | Month-to-date report |
-| GET | `/reports/monthly?date=YYYY-MM-DD` | Previous month's report |
-
-## Security and Data Integrity
-
-- Passwords are stored as bcrypt hashes, never as plaintext.
-- Protected routes require JWT authentication.
-- Reading queries are scoped to the authenticated user.
-- Input validation is handled using Zod.
-- Helmet provides HTTP security headers.
-- Authentication endpoints have rate limits.
-- Database constraints enforce unique reading slots per user and date.
-- Transactions and PostgreSQL advisory locks protect concurrent reading operations.
-
-## Notes
-
-- Never commit `.env` or `.env.test` files.
-- Use `.env.example` files as configuration templates.
-- The demo credentials are for development and assessment demonstration only.
-- The application stores glucose values in mg/dL.
+Sweety records and summarizes user-entered glucose readings. It does not diagnose conditions, recommend treatment, or replace advice from a qualified healthcare professional.
