@@ -8,6 +8,7 @@ import {
     clearAuthError,
 } from "../features/auth/authSlice";
 import { useToast } from "../components/common/useToast";
+import sweetyLogo from "../assets/Sweety_logo.png";
 
 function RegisterPage() {
     const dispatch = useAppDispatch();
@@ -38,11 +39,18 @@ function RegisterPage() {
         <div className="flex min-h-screen items-center justify-center bg-canvas px-4 py-12">
             <div className="w-full max-w-md rounded-lg border border-border-strong bg-surface p-8">
                 <div className="mb-6">
-                    <div className="mb-3 flex items-center gap-2">
-                        <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
-                        <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
-                            Sweety Blood Glucose Tracker
-                        </span>
+                    <div className="mb-5">
+                        <div className="flex items-center gap-3">
+                            <img
+                                src={sweetyLogo}
+                                alt="Sweety"
+                                className="h-10 w-auto object-contain"
+                            />
+                            <div>
+                                <p className="text-base font-semibold leading-tight text-text-primary">Sweety</p>
+                                <p className="text-xs leading-tight text-text-muted">Blood Glucose Tracker</p>
+                            </div>
+                        </div>
                     </div>
 
                     <h1 className="text-xl font-semibold text-text-primary">

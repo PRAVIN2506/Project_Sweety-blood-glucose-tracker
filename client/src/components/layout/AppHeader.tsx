@@ -5,6 +5,7 @@ import { logout } from "../../features/auth/authSlice";
 import { clearReadings } from "../../features/readings/readingsSlice";
 import { clearReports } from "../../features/reports/reportsSlice";
 import { useToast } from "../common/useToast";
+import sweetyLogo from "../../assets/Sweety_logo.png";
 
 function AppHeader() {
   const dispatch = useAppDispatch();
@@ -33,9 +34,14 @@ function AppHeader() {
         <div className="flex items-center gap-8 py-3">
           <NavLink
             to="/dashboard"
-            className="flex items-center gap-2 text-base font-semibold text-text-primary"
+            className="flex items-center gap-2.5 text-base font-semibold text-text-primary"
           >
-            <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+            <img
+              src={sweetyLogo}
+              alt=""
+              aria-hidden="true"
+              className="h-7 w-auto object-contain"
+            />
             <span>Sweety</span>
           </NavLink>
 
