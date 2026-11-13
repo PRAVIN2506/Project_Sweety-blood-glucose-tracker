@@ -100,93 +100,95 @@ function ReadingForm({
     return (
         <form
             onSubmit={handleSubmit}
-            className="space-y-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm"
+            className="space-y-4 rounded-lg border border-border-strong bg-surface p-6"
         >
-            <div>
-                <h2 className="text-xl font-semibold text-slate-900">
+            <div className="border-b border-border-subtle pb-3">
+                <h2 className="text-base font-semibold text-text-primary">
                     {initialReading ? "Edit reading" : "Add glucose reading"}
                 </h2>
-                <p className="mt-1 text-sm text-slate-500">
+                <p className="mt-0.5 text-xs text-text-secondary">
                     Record your blood glucose measurement.
                 </p>
             </div>
 
-            <div>
-                <label htmlFor="reading-date" className="mb-2 block text-sm font-medium text-slate-700">
-                    Date
-                </label>
-                <input
-                    id="reading-date"
-                    type="date"
-                    value={date}
-                    max={getToday()}
-                    onChange={(event) => setDate(event.target.value)}
-                    required
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-                />
-            </div>
+            <div className="grid gap-4 sm:grid-cols-3">
+                <div>
+                    <label htmlFor="reading-date" className="mb-1.5 block text-xs font-medium text-text-secondary">
+                        Date
+                    </label>
+                    <input
+                        id="reading-date"
+                        type="date"
+                        value={date}
+                        max={getToday()}
+                        onChange={(event) => setDate(event.target.value)}
+                        required
+                        className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                    />
+                </div>
 
-            <div>
-                <label htmlFor="reading-slot" className="mb-2 block text-sm font-medium text-slate-700">
-                    Reading slot
-                </label>
-                <select
-                    id="reading-slot"
-                    value={slot}
-                    onChange={(event) => setSlot(event.target.value as ReadingSlot)}
-                    required
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-                >
-                    {slots.map((item) => {
-                        const disabled =
-                            usedSlots.includes(item.value) &&
-                            item.value !== initialReading?.slot;
+                <div>
+                    <label htmlFor="reading-slot" className="mb-1.5 block text-xs font-medium text-text-secondary">
+                        Reading slot
+                    </label>
+                    <select
+                        id="reading-slot"
+                        value={slot}
+                        onChange={(event) => setSlot(event.target.value as ReadingSlot)}
+                        required
+                        className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                    >
+                        {slots.map((item) => {
+                            const disabled =
+                                usedSlots.includes(item.value) &&
+                                item.value !== initialReading?.slot;
 
-                        return (
-                            <option
-                                key={item.value}
-                                value={item.value}
-                                disabled={disabled}
-                            >
-                                {item.label}{disabled ? " (already recorded)" : ""}
-                            </option>
-                        );
-                    })}
-                </select>
-            </div>
+                            return (
+                                <option
+                                    key={item.value}
+                                    value={item.value}
+                                    disabled={disabled}
+                                >
+                                    {item.label}{disabled ? " (already recorded)" : ""}
+                                </option>
+                            );
+                        })}
+                    </select>
+                </div>
 
-            <div>
-                <label htmlFor="reading-value" className="mb-2 block text-sm font-medium text-slate-700">
-                    Glucose value (mg/dL)
-                </label>
-                <input
-                    id="reading-value"
-                    type="number"
-                    min={40}
-                    max={600}
-                    step={1}
-                    value={value}
-                    onChange={(event) => setValue(event.target.value)}
-                    placeholder="Example: 110"
-                    required
-                    className="w-full rounded-lg border border-slate-300 px-3 py-2.5 outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
-                />
-                <p className="mt-1 text-xs text-slate-500">
-                    Accepted range: 40–600 mg/dL.
-                </p>
+                <div>
+                    <label htmlFor="reading-value" className="mb-1.5 block text-xs font-medium text-text-secondary">
+                        Glucose value (mg/dL)
+                    </label>
+                    <input
+                        id="reading-value"
+                        type="number"
+                        min={40}
+                        max={600}
+                        step={1}
+                        value={value}
+                        onChange={(event) => setValue(event.target.value)}
+                        placeholder="e.g. 110"
+                        required
+                        className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                    />
+                    <p className="mt-1 text-xs text-text-muted">
+                        Accepted range: 40 to 600 mg/dL.
+                    </p>
+                </div>
             </div>
 
             {error && (
-                <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-red-700">
+                <div role="alert" className="rounded border border-critical-border bg-critical-bg p-3 text-xs text-critical">
                     {error}
-                </p>
+                </div>
             )}
 
-            <div className="flex gap-3">
+            <div className="flex items-center gap-3 pt-2">
                 <button
                     type="submit"
                     disabled={loading}
-                    className="flex-1 rounded-lg bg-indigo-600 px-4 py-2.5 font-medium text-white hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-60"
+                    className="rounded bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
                 >
                     {loading ? "Saving..." : initialReading ? "Update reading" : "Save reading"}
                 </button>
@@ -194,7 +196,7 @@ function ReadingForm({
                 <button
                     type="button"
                     onClick={onCancel}
-                    className="rounded-lg border border-slate-300 px-4 py-2.5 font-medium text-slate-700 hover:bg-slate-50"
+                    className="rounded border border-border-strong bg-surface px-4 py-2 text-sm font-medium text-text-secondary hover:bg-surface-subtle transition"
                 >
                     Cancel
                 </button>

@@ -35,51 +35,52 @@ function ReadingTable({
 
     if (sortedReadings.length === 0) {
         return (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                <p className="text-lg font-semibold text-slate-800">
+            <div className="rounded-lg border border-border-strong bg-surface p-8 text-center">
+                <p className="text-sm font-semibold text-text-primary">
                     No readings found
                 </p>
-                <p className="mt-2 text-sm text-slate-500">
-                    Add your first glucose reading to get started.
+                <p className="mt-1 text-xs text-text-secondary">
+                    Add a glucose reading or adjust the date filter.
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+        <div className="overflow-hidden rounded-lg border border-border-strong bg-surface">
             <div className="overflow-x-auto">
-                <table className="w-full min-w-[650px] text-left text-sm">
-                    <thead className="bg-slate-50 text-slate-600">
+                <table className="w-full min-w-[600px] text-left text-sm">
+                    <thead className="border-b border-border-subtle bg-surface-subtle text-xs font-semibold text-text-secondary">
                         <tr>
-                            <th className="px-5 py-4 font-semibold">Date</th>
-                            <th className="px-5 py-4 font-semibold">Reading slot</th>
-                            <th className="px-5 py-4 font-semibold">Glucose</th>
-                            <th className="px-5 py-4 text-right font-semibold">Actions</th>
+                            <th className="px-4 py-3">Date</th>
+                            <th className="px-4 py-3">Reading slot</th>
+                            <th className="px-4 py-3">Glucose</th>
+                            <th className="px-4 py-3 text-right">Actions</th>
                         </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border-subtle">
                         {sortedReadings.map((reading) => (
-                            <tr key={reading.id} className="hover:bg-slate-50">
-                                <td className="px-5 py-4 text-slate-700">
+                            <tr key={reading.id} className="transition-colors hover:bg-surface-subtle/50">
+                                <td className="px-4 py-3 text-text-primary">
                                     {new Date(`${reading.date.slice(0, 10)}T00:00:00`).toLocaleDateString()}
                                 </td>
 
-                                <td className="px-5 py-4 text-slate-700">
+                                <td className="px-4 py-3 text-text-secondary">
                                     {slotLabels[reading.slot]}
                                 </td>
 
-                                <td className="px-5 py-4 font-semibold text-slate-900">
-                                    {reading.value} mg/dL
+                                <td className="px-4 py-3 font-medium text-text-primary tabular-nums">
+                                    {reading.value}{" "}
+                                    <span className="text-xs font-normal text-text-muted">mg/dL</span>
                                 </td>
 
-                                <td className="px-5 py-4">
+                                <td className="px-4 py-3">
                                     <div className="flex justify-end gap-2">
                                         <button
                                             type="button"
                                             onClick={() => onEdit(reading)}
-                                            className="rounded-lg border border-slate-300 px-3 py-1.5 font-medium text-slate-700 hover:bg-slate-100"
+                                            className="rounded border border-border-strong bg-surface px-2.5 py-1 text-xs font-medium text-text-primary hover:bg-surface-subtle transition"
                                         >
                                             Edit
                                         </button>
@@ -87,7 +88,7 @@ function ReadingTable({
                                         <button
                                             type="button"
                                             onClick={() => onDelete(reading)}
-                                            className="rounded-lg border border-red-200 px-3 py-1.5 font-medium text-red-600 hover:bg-red-50"
+                                            className="rounded border border-border-strong bg-surface px-2.5 py-1 text-xs font-medium text-critical hover:border-critical-border hover:bg-critical-bg transition"
                                         >
                                             Delete
                                         </button>

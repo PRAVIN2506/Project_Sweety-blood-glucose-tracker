@@ -127,19 +127,15 @@ function ReadingsPage() {
         <div className="min-h-screen bg-canvas">
             <AppHeader />
 
-            <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+            <main className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
                 {/* Page header */}
-                <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+                <header className="flex flex-col justify-between gap-4 border-b border-border-subtle pb-6 sm:flex-row sm:items-center">
                     <div>
-                        <p className="text-sm font-medium text-indigo-600">
-                            SWEETY / TRACKER
-                        </p>
-
-                        <h1 className="mt-2 text-3xl font-bold text-slate-900">
+                        <h1 className="text-2xl font-semibold text-text-primary">
                             Glucose readings
                         </h1>
 
-                        <p className="mt-2 text-slate-500">
+                        <p className="mt-1 text-sm text-text-secondary">
                             Manage and review your blood glucose records.
                         </p>
                     </div>
@@ -147,46 +143,46 @@ function ReadingsPage() {
                     <button
                         type="button"
                         onClick={openAddForm}
-                        className="rounded-lg bg-indigo-600 px-5 py-3 font-medium text-white transition hover:bg-indigo-700"
+                        className="inline-flex items-center justify-center rounded bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-accent-hover"
                     >
-                        + Add reading
+                        Add reading
                     </button>
                 </header>
 
                 {/* Summary cards */}
                 <section className="grid gap-4 sm:grid-cols-3">
-                    <div className="rounded-xl border border-slate-200 bg-white p-5">
-                        <p className="text-sm text-slate-500">
+                    <div className="rounded-lg border border-border-strong bg-surface p-4">
+                        <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
                             Total readings
                         </p>
 
-                        <p className="mt-2 text-2xl font-bold text-slate-900">
+                        <p className="mt-2 text-2xl font-semibold text-text-primary tabular-nums">
                             {readings.length}
                         </p>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-5">
-                        <p className="text-sm text-slate-500">
+                    <div className="rounded-lg border border-border-strong bg-surface p-4">
+                        <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
                             Average glucose
                         </p>
 
-                        <p className="mt-2 text-2xl font-bold text-slate-900">
-                            {average ?? "—"}
+                        <p className="mt-2 text-2xl font-semibold text-text-primary tabular-nums">
+                            {average ?? "N/A"}
 
                             {average !== null && (
-                                <span className="ml-1 text-sm font-normal text-slate-500">
+                                <span className="ml-1 text-xs font-normal text-text-muted">
                                     mg/dL
                                 </span>
                             )}
                         </p>
                     </div>
 
-                    <div className="rounded-xl border border-slate-200 bg-white p-5">
-                        <p className="text-sm text-slate-500">
-                            Maximum readings per day
+                    <div className="rounded-lg border border-border-strong bg-surface p-4">
+                        <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                            Maximum per day
                         </p>
 
-                        <p className="mt-2 text-2xl font-bold text-slate-900">
+                        <p className="mt-2 text-2xl font-semibold text-text-primary tabular-nums">
                             4
                         </p>
                     </div>
@@ -209,14 +205,14 @@ function ReadingsPage() {
                 {/* Reading history */}
                 <section className="space-y-4">
                     <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
-                        <h2 className="text-xl font-semibold text-slate-900">
+                        <h2 className="text-base font-semibold text-text-primary">
                             Reading history
                         </h2>
 
                         <div className="flex flex-wrap items-center gap-2">
                             <label
                                 htmlFor="filter-date"
-                                className="text-sm text-slate-600"
+                                className="text-xs text-text-secondary"
                             >
                                 Filter by date:
                             </label>
@@ -228,14 +224,14 @@ function ReadingsPage() {
                                 onChange={(event) =>
                                     setSelectedDate(event.target.value)
                                 }
-                                className="rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm"
+                                className="rounded border border-border-strong bg-surface px-2.5 py-1 text-xs text-text-primary outline-none focus:border-accent focus:ring-1 focus:ring-accent"
                             />
 
                             {selectedDate && (
                                 <button
                                     type="button"
                                     onClick={() => setSelectedDate("")}
-                                    className="text-sm font-medium text-indigo-600 hover:underline"
+                                    className="text-xs font-medium text-accent hover:underline"
                                 >
                                     Clear
                                 </button>
@@ -247,7 +243,7 @@ function ReadingsPage() {
                     {error && (
                         <div
                             role="alert"
-                            className="rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700"
+                            className="rounded border border-critical-border bg-critical-bg p-3 text-xs text-critical"
                         >
                             {error}
                         </div>
@@ -255,22 +251,22 @@ function ReadingsPage() {
 
                     {/* Loading state */}
                     {status === "loading" && (
-                        <div className="rounded-xl bg-white p-10 text-center text-slate-500">
+                        <div className="rounded-lg border border-border-strong bg-surface p-8 text-center text-xs text-text-secondary">
                             Loading readings...
                         </div>
                     )}
 
                     {/* Failed state */}
                     {status === "failed" && (
-                        <div className="rounded-xl bg-white p-10 text-center">
-                            <p className="text-red-600">
+                        <div className="rounded-lg border border-critical-border bg-critical-bg p-8 text-center">
+                            <p className="text-xs font-medium text-critical">
                                 {error || "Unable to load readings."}
                             </p>
 
                             <button
                                 type="button"
                                 onClick={() => dispatch(fetchReadings())}
-                                className="mt-4 font-medium text-indigo-600 hover:underline"
+                                className="mt-3 text-xs font-medium text-accent hover:underline"
                             >
                                 Try again
                             </button>
