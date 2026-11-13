@@ -29,9 +29,9 @@ function ProtectedRoute({ children }: ProtectedRouteProps) {
 
     if (isInitializing) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-slate-50">
-                <p className="text-slate-500">
-                    Checking your session...
+            <div className="flex min-h-screen items-center justify-center bg-canvas">
+                <p className="text-sm font-medium text-text-secondary">
+                    Verifying session...
                 </p>
             </div>
         );
@@ -53,9 +53,9 @@ function AppRoutes() {
 
     if (isInitializing) {
         return (
-            <div className="flex min-h-screen items-center justify-center bg-slate-50">
-                <p className="text-slate-500">
-                    Checking your session...
+            <div className="flex min-h-screen items-center justify-center bg-canvas">
+                <p className="text-sm font-medium text-text-secondary">
+                    Verifying session...
                 </p>
             </div>
         );
