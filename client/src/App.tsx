@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { BrowserRouter } from "react-router-dom";
 
 import AppRoutes from "./routes/AppRoutes";
+import ToastProvider from "./components/common/ToastProvider";
 
 import { useAppDispatch } from "./hooks/useAppDispatch";
 import { useAppSelector } from "./hooks/useAppSelector";
@@ -28,9 +29,11 @@ function App() {
   }, [dispatch, token]);
 
   return (
-    <BrowserRouter>
-      <AppRoutes />
-    </BrowserRouter>
+    <ToastProvider>
+      <BrowserRouter>
+        <AppRoutes />
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
 

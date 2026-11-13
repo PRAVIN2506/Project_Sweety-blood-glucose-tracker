@@ -4,10 +4,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { loginUser, clearAuthError } from "../features/auth/authSlice";
+import { useToast } from "../components/common/useToast";
 
 function LoginPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const { status, error } = useAppSelector((state) => state.auth);
 
@@ -19,9 +21,10 @@ function LoginPage() {
 
         try {
             await dispatch(loginUser({ email, password })).unwrap();
+            toast.success("Signed in successfully.");
             navigate("/dashboard");
         } catch {
-            // Redux stores the error message.
+            // Redux stores the error message and displays it in the inline alert.
         }
     };
 

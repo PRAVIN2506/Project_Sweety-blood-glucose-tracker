@@ -7,10 +7,12 @@ import {
     registerUser,
     clearAuthError,
 } from "../features/auth/authSlice";
+import { useToast } from "../components/common/useToast";
 
 function RegisterPage() {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
+    const toast = useToast();
 
     const { status, error } = useAppSelector((state) => state.auth);
 
@@ -25,10 +27,10 @@ function RegisterPage() {
             await dispatch(
                 registerUser({ name, email, password })
             ).unwrap();
-
+            toast.success("Account created successfully.");
             navigate("/dashboard");
         } catch {
-            // Redux stores the error message.
+            // Redux stores the error message and displays it in the inline alert.
         }
     };
 

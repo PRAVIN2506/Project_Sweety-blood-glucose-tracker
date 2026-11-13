@@ -93,7 +93,7 @@ function ReadingForm({
         try {
             await onSubmit({ date, slot, value: numericValue });
         } catch {
-            // The Redux error is displayed by the parent page.
+            // Form remains open and user-entered values are preserved on failure.
         }
     };
 
@@ -102,13 +102,23 @@ function ReadingForm({
             onSubmit={handleSubmit}
             className="space-y-4 rounded-lg border border-border-strong bg-surface p-6"
         >
-            <div className="border-b border-border-subtle pb-3">
-                <h2 className="text-base font-semibold text-text-primary">
-                    {initialReading ? "Edit reading" : "Add glucose reading"}
-                </h2>
-                <p className="mt-0.5 text-xs text-text-secondary">
-                    Record your blood glucose measurement.
-                </p>
+            <div className="flex items-center justify-between border-b border-border-subtle pb-3">
+                <div>
+                    <h2 className="text-base font-semibold text-text-primary">
+                        {initialReading ? "Edit reading" : "Add glucose reading"}
+                    </h2>
+                    <p className="mt-0.5 text-xs text-text-secondary">
+                        {initialReading
+                            ? "Update the details for this blood glucose record."
+                            : "Record your blood glucose measurement."}
+                    </p>
+                </div>
+
+                {initialReading && (
+                    <span className="rounded border border-accent/30 bg-accent-subtle px-2 py-0.5 text-xs font-medium text-accent">
+                        Edit mode
+                    </span>
+                )}
             </div>
 
             <div className="grid gap-4 sm:grid-cols-3">

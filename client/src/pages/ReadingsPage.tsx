@@ -19,9 +19,12 @@ import type {
 import ReadingForm from "../features/readings/components/ReadingForm";
 import ReadingTable from "../features/readings/components/ReadingTable";
 import AppHeader from "../components/layout/AppHeader";
+import ConfirmDialog from "../components/common/ConfirmDialog";
+import { useToast } from "../components/common/useToast";
 
 function ReadingsPage() {
     const dispatch = useAppDispatch();
+    const toast = useToast();
 
     const {
         readings,
@@ -33,6 +36,10 @@ function ReadingsPage() {
     const [editingReading, setEditingReading] = useState<Reading | null>(null);
     const [showForm, setShowForm] = useState(false);
     const [selectedDate, setSelectedDate] = useState("");
+
+    // Confirmation dialog state
+    const [deletingReading, setDeletingReading] = useState<Reading | null>(null);
+    const [isDeleting, setIsDeleting] = useState(false);
 
     useEffect(() => {
         dispatch(fetchReadings());
@@ -62,10 +69,18 @@ function ReadingsPage() {
     }, [readings]);
 
     const handleAdd = async (data: CreateReadingInput) => {
-        await dispatch(addReading(data)).unwrap();
+        dispatch(clearReadingsError());
 
-        setShowForm(false);
-        setEditingReading(null);
+        try {
+            await dispatch(addReading(data)).unwrap();
+            toast.success("Reading recorded successfully.");
+            setShowForm(false);
+            setEditingReading(null);
+        } catch (err) {
+            const message = typeof err === "string" ? err : "Failed to record reading.";
+            toast.error(message);
+            throw err;
+        }
     };
 
     const handleEdit = async (data: CreateReadingInput) => {
@@ -73,45 +88,64 @@ function ReadingsPage() {
             return;
         }
 
-        await dispatch(
-            editReading({
-                id: editingReading.id,
-                data,
-            })
-        ).unwrap();
-
-        setShowForm(false);
-        setEditingReading(null);
-    };
-
-    const handleDelete = async (reading: Reading) => {
-        const confirmed = window.confirm(
-            `Delete the ${reading.value} mg/dL reading? This action cannot be undone.`
-        );
-
-        if (!confirmed) {
-            return;
-        }
-
         dispatch(clearReadingsError());
 
         try {
-            await dispatch(removeReading(reading.id)).unwrap();
-        } catch {
-            // The Redux error is displayed on the page.
+            await dispatch(
+                editReading({
+                    id: editingReading.id,
+                    data,
+                })
+            ).unwrap();
+            toast.success("Reading updated successfully.");
+            setShowForm(false);
+            setEditingReading(null);
+        } catch (err) {
+            const message = typeof err === "string" ? err : "Failed to update reading.";
+            toast.error(message);
+            throw err;
+        }
+    };
+
+    const requestDelete = (reading: Reading) => {
+        dispatch(clearReadingsError());
+        setDeletingReading(reading);
+    };
+
+    const handleConfirmDelete = async () => {
+        if (!deletingReading) {
+            return;
+        }
+
+        setIsDeleting(true);
+        dispatch(clearReadingsError());
+
+        try {
+            await dispatch(removeReading(deletingReading.id)).unwrap();
+            toast.success("Reading deleted successfully.");
+            setDeletingReading(null);
+        } catch (err) {
+            const message = typeof err === "string" ? err : "Failed to delete reading.";
+            toast.error(message);
+        } finally {
+            setIsDeleting(false);
+        }
+    };
+
+    const handleCancelDelete = () => {
+        if (!isDeleting) {
+            setDeletingReading(null);
         }
     };
 
     const openAddForm = () => {
         dispatch(clearReadingsError());
-
         setEditingReading(null);
         setShowForm(true);
     };
 
     const openEditForm = (reading: Reading) => {
         dispatch(clearReadingsError());
-
         setEditingReading(reading);
         setShowForm(true);
     };
@@ -119,7 +153,6 @@ function ReadingsPage() {
     const closeForm = () => {
         setShowForm(false);
         setEditingReading(null);
-
         dispatch(clearReadingsError());
     };
 
@@ -239,16 +272,6 @@ function ReadingsPage() {
                         </div>
                     </div>
 
-                    {/* API error */}
-                    {error && (
-                        <div
-                            role="alert"
-                            className="rounded border border-critical-border bg-critical-bg p-3 text-xs text-critical"
-                        >
-                            {error}
-                        </div>
-                    )}
-
                     {/* Loading state */}
                     {status === "loading" && (
                         <div className="rounded-lg border border-border-strong bg-surface p-8 text-center text-xs text-text-secondary">
@@ -278,11 +301,24 @@ function ReadingsPage() {
                         <ReadingTable
                             readings={filteredReadings}
                             onEdit={openEditForm}
-                            onDelete={handleDelete}
+                            onDelete={requestDelete}
                         />
                     )}
                 </section>
             </main>
+
+            {/* Accessible Confirmation Dialog */}
+            <ConfirmDialog
+                isOpen={Boolean(deletingReading)}
+                title="Delete reading?"
+                description="This reading will be permanently deleted. This action cannot be undone."
+                confirmLabel="Delete reading"
+                cancelLabel="Cancel"
+                isDestructive={true}
+                isLoading={isDeleting}
+                onConfirm={handleConfirmDelete}
+                onCancel={handleCancelDelete}
+            />
         </div>
     );
 }

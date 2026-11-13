@@ -4,16 +4,19 @@ import { useAppSelector } from "../../hooks/useAppSelector";
 import { logout } from "../../features/auth/authSlice";
 import { clearReadings } from "../../features/readings/readingsSlice";
 import { clearReports } from "../../features/reports/reportsSlice";
+import { useToast } from "../common/useToast";
 
 function AppHeader() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const toast = useToast();
   const user = useAppSelector((state) => state.auth.user);
 
   const handleLogout = async () => {
     await dispatch(logout());
     dispatch(clearReadings());
     dispatch(clearReports());
+    toast.info("Signed out successfully.");
     navigate("/login", { replace: true });
   };
 
@@ -56,7 +59,7 @@ function AppHeader() {
           <button
             type="button"
             onClick={handleLogout}
-            className="rounded border border-border-strong bg-surface px-3 py-1 text-xs font-medium text-text-secondary hover:bg-surface-subtle hover:text-text-primary"
+            className="rounded border border-border-strong bg-surface px-3 py-1 text-xs font-medium text-text-secondary hover:bg-surface-subtle hover:text-text-primary transition"
           >
             Sign out
           </button>
