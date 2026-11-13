@@ -19,7 +19,7 @@ function ReportTypeTabs({
         <div
             role="tablist"
             aria-label="Report type"
-            className="flex flex-wrap gap-2"
+            className="inline-flex flex-wrap gap-1 rounded border border-border-strong bg-surface p-1"
         >
             {tabs.map((tab) => {
                 const active = activeType === tab.value;
@@ -31,10 +31,11 @@ function ReportTypeTabs({
                         role="tab"
                         aria-selected={active}
                         onClick={() => onChange(tab.value)}
-                        className={`rounded-lg px-4 py-2.5 text-sm font-medium transition ${active
-                                ? "bg-indigo-600 text-white"
-                                : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50"
-                            }`}
+                        className={`rounded px-3 py-1.5 text-xs font-medium transition ${
+                            active
+                                ? "bg-accent text-white"
+                                : "text-text-secondary hover:bg-surface-subtle hover:text-text-primary"
+                        }`}
                     >
                         {tab.label}
                     </button>

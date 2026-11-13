@@ -36,64 +36,57 @@ function ReportReadingsTable({
 }: ReportReadingsTableProps) {
     if (readings.length === 0) {
         return (
-            <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-10 text-center">
-                <h3 className="text-lg font-semibold text-slate-800">
+            <div className="rounded-lg border border-border-strong bg-surface p-8 text-center">
+                <h3 className="text-sm font-semibold text-text-primary">
                     No readings found
                 </h3>
 
-                <p className="mt-2 text-sm text-slate-500">
-                    There are no glucose readings for this report period.
+                <p className="mt-1 text-xs text-text-secondary">
+                    There are no glucose readings recorded for this report period.
                 </p>
             </div>
         );
     }
 
     return (
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
-            <div className="border-b border-slate-200 px-5 py-4">
-                <h3 className="font-semibold text-slate-900">
+        <div className="overflow-hidden rounded-lg border border-border-strong bg-surface">
+            <div className="flex items-center justify-between border-b border-border-subtle bg-surface px-4 py-3">
+                <h3 className="text-sm font-semibold text-text-primary">
                     Reading details
                 </h3>
 
-                <p className="mt-1 text-sm text-slate-500">
+                <span className="text-xs text-text-muted">
                     {readings.length} recorded reading(s)
-                </p>
+                </span>
             </div>
 
             <div className="overflow-x-auto">
-                <table className="w-full min-w-[550px] text-left text-sm">
-                    <thead className="bg-slate-50 text-slate-600">
+                <table className="w-full min-w-[500px] text-left text-sm">
+                    <thead className="border-b border-border-subtle bg-surface-subtle text-xs font-semibold text-text-secondary">
                         <tr>
-                            <th className="px-5 py-4 font-semibold">
-                                Date
-                            </th>
-
-                            <th className="px-5 py-4 font-semibold">
-                                Reading slot
-                            </th>
-
-                            <th className="px-5 py-4 font-semibold">
-                                Glucose value
-                            </th>
+                            <th className="px-4 py-2.5">Date</th>
+                            <th className="px-4 py-2.5">Reading slot</th>
+                            <th className="px-4 py-2.5">Glucose value</th>
                         </tr>
                     </thead>
 
-                    <tbody className="divide-y divide-slate-100">
+                    <tbody className="divide-y divide-border-subtle">
                         {readings.map((reading) => (
                             <tr
                                 key={reading.id}
-                                className="hover:bg-slate-50"
+                                className="transition-colors hover:bg-surface-subtle/50"
                             >
-                                <td className="px-5 py-4 text-slate-700">
+                                <td className="px-4 py-2.5 text-text-primary">
                                     {formatDate(reading.date)}
                                 </td>
 
-                                <td className="px-5 py-4 text-slate-700">
+                                <td className="px-4 py-2.5 text-text-secondary">
                                     {slotLabels[reading.slot]}
                                 </td>
 
-                                <td className="px-5 py-4 font-semibold text-slate-900">
-                                    {reading.value} mg/dL
+                                <td className="px-4 py-2.5 font-medium text-text-primary tabular-nums">
+                                    {reading.value}{" "}
+                                    <span className="text-xs font-normal text-text-muted">mg/dL</span>
                                 </td>
                             </tr>
                         ))}

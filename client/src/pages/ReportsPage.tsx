@@ -40,7 +40,7 @@ function formatDate(date: string): string {
         undefined,
         {
             day: "2-digit",
-            month: "long",
+            month: "short",
             year: "numeric",
         }
     );
@@ -101,30 +101,26 @@ function ReportsPage() {
         <div className="min-h-screen bg-canvas">
             <AppHeader />
 
-            <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
+            <main className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
                 {/* Header */}
-                <header>
-                    <p className="text-sm font-medium text-indigo-600">
-                        SWEETY / ANALYTICS
-                    </p>
-
-                    <h1 className="mt-2 text-3xl font-bold text-slate-900">
+                <header className="border-b border-border-subtle pb-6">
+                    <h1 className="text-2xl font-semibold text-text-primary">
                         Glucose reports
                     </h1>
 
-                    <p className="mt-2 text-slate-500">
+                    <p className="mt-1 text-sm text-text-secondary">
                         Review your blood glucose statistics and reading history.
                     </p>
                 </header>
 
                 {/* Date selection */}
-                <section className="flex flex-col justify-between gap-4 rounded-2xl border border-slate-200 bg-white p-5 sm:flex-row sm:items-center">
+                <section className="flex flex-col justify-between gap-4 rounded-lg border border-border-strong bg-surface p-4 sm:flex-row sm:items-center">
                     <div>
-                        <h2 className="font-semibold text-slate-900">
+                        <h2 className="text-sm font-semibold text-text-primary">
                             Report reference date
                         </h2>
 
-                        <p className="mt-1 text-sm text-slate-500">
+                        <p className="mt-0.5 text-xs text-text-secondary">
                             Select a date to calculate all three report periods.
                         </p>
                     </div>
@@ -136,7 +132,7 @@ function ReportsPage() {
                         onChange={(event) =>
                             handleDateChange(event.target.value)
                         }
-                        className="rounded-lg border border-slate-300 px-4 py-2.5 text-sm outline-none focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"
+                        className="rounded border border-border-strong bg-surface px-3 py-1.5 text-xs text-text-primary outline-none focus:border-accent focus:ring-1 focus:ring-accent"
                     />
                 </section>
 
@@ -147,26 +143,26 @@ function ReportsPage() {
                 />
 
                 {/* Active report */}
-                <section className="space-y-5">
-                    <div>
-                        <h2 className="text-xl font-semibold text-slate-900">
+                <section className="space-y-4">
+                    <div className="border-b border-border-subtle pb-3">
+                        <h2 className="text-base font-semibold text-text-primary">
                             {reportLabels[activeType]}
                         </h2>
 
-                        <p className="mt-1 text-sm text-slate-500">
+                        <p className="mt-0.5 text-xs text-text-muted">
                             Reference date: {formatDate(selectedDate)}
                         </p>
                     </div>
 
                     {currentStatus === "loading" && (
-                        <div className="rounded-xl border border-slate-200 bg-white p-10 text-center text-slate-500">
+                        <div className="rounded-lg border border-border-strong bg-surface p-8 text-center text-xs text-text-secondary">
                             Loading {reportLabels[activeType].toLowerCase()}...
                         </div>
                     )}
 
                     {currentStatus === "failed" && (
-                        <div className="rounded-xl border border-red-200 bg-red-50 p-5">
-                            <p role="alert" className="text-sm text-red-700">
+                        <div className="rounded-lg border border-critical-border bg-critical-bg p-6">
+                            <p role="alert" className="text-xs font-medium text-critical">
                                 {currentError || "Unable to load this report."}
                             </p>
 
@@ -178,7 +174,7 @@ function ReportsPage() {
                                         date: selectedDate,
                                     }))
                                 }
-                                className="mt-3 text-sm font-semibold text-red-700 hover:underline"
+                                className="mt-3 text-xs font-medium text-accent hover:underline"
                             >
                                 Try again
                             </button>
@@ -187,14 +183,14 @@ function ReportsPage() {
 
                     {currentStatus === "succeeded" && currentReport && (
                         <div className="space-y-6">
-                            <div className="rounded-xl border border-slate-200 bg-white px-5 py-4">
-                                <p className="text-sm text-slate-500">
+                            <div className="rounded-lg border border-border-strong bg-surface px-4 py-3">
+                                <p className="text-xs font-medium uppercase tracking-wider text-text-muted">
                                     Report period
                                 </p>
 
-                                <p className="mt-1 font-semibold text-slate-900">
+                                <p className="mt-1 text-sm font-semibold text-text-primary">
                                     {formatDate(currentReport.startDate)}
-                                    {" — "}
+                                    {" to "}
                                     {formatDate(currentReport.endDate)}
                                 </p>
                             </div>
