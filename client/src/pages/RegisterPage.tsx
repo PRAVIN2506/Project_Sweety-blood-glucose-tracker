@@ -33,19 +33,28 @@ function RegisterPage() {
     };
 
     return (
-        <div className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-            <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-sm">
-                <h1 className="mb-2 text-3xl font-bold text-gray-900">
-                    Create your account
-                </h1>
+        <div className="flex min-h-screen items-center justify-center bg-canvas px-4 py-12">
+            <div className="w-full max-w-md rounded-lg border border-border-strong bg-surface p-8">
+                <div className="mb-6">
+                    <div className="mb-3 flex items-center gap-2">
+                        <span className="h-2 w-2 rounded-full bg-accent" aria-hidden="true" />
+                        <span className="text-xs font-medium uppercase tracking-wider text-text-muted">
+                            Sweety Blood Glucose Tracker
+                        </span>
+                    </div>
 
-                <p className="mb-6 text-gray-500">
-                    Start tracking your blood glucose with Sweety.
-                </p>
+                    <h1 className="text-xl font-semibold text-text-primary">
+                        Create account
+                    </h1>
 
-                <form onSubmit={handleSubmit} className="space-y-5">
+                    <p className="mt-1 text-sm text-text-secondary">
+                        Register to record and monitor your blood glucose readings.
+                    </p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <label htmlFor="name" className="mb-1 block text-sm font-medium">
+                        <label htmlFor="name" className="mb-1.5 block text-xs font-medium text-text-secondary">
                             Full name
                         </label>
 
@@ -61,13 +70,13 @@ function RegisterPage() {
                             minLength={2}
                             maxLength={100}
                             autoComplete="name"
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-                            placeholder="Enter your name"
+                            className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                            placeholder="Full name"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="email" className="mb-1 block text-sm font-medium">
+                        <label htmlFor="email" className="mb-1.5 block text-xs font-medium text-text-secondary">
                             Email address
                         </label>
 
@@ -81,13 +90,13 @@ function RegisterPage() {
                             }}
                             required
                             autoComplete="email"
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-                            placeholder="Enter your email"
+                            className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                            placeholder="name@example.com"
                         />
                     </div>
 
                     <div>
-                        <label htmlFor="password" className="mb-1 block text-sm font-medium">
+                        <label htmlFor="password" className="mb-1.5 block text-xs font-medium text-text-secondary">
                             Password
                         </label>
 
@@ -102,29 +111,29 @@ function RegisterPage() {
                             required
                             minLength={8}
                             autoComplete="new-password"
-                            className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-blue-500"
-                            placeholder="At least 8 characters"
+                            className="w-full rounded border border-border-strong bg-surface px-3 py-2 text-sm text-text-primary placeholder:text-text-muted outline-none focus:border-accent focus:ring-1 focus:ring-accent"
+                            placeholder="Minimum 8 characters"
                         />
                     </div>
 
                     {error && (
-                        <p role="alert" className="text-sm text-red-600">
+                        <div role="alert" className="rounded border border-critical-border bg-critical-bg p-3 text-xs text-critical">
                             {error}
-                        </p>
+                        </div>
                     )}
 
                     <button
                         type="submit"
                         disabled={status === "loading"}
-                        className="w-full rounded-lg bg-blue-600 px-4 py-3 font-semibold text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                        className="w-full rounded bg-accent px-4 py-2.5 text-sm font-medium text-white transition hover:bg-accent-hover disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                        {status === "loading" ? "Creating account..." : "Create Account"}
+                        {status === "loading" ? "Creating account..." : "Create account"}
                     </button>
                 </form>
 
-                <p className="mt-6 text-center text-sm text-gray-600">
+                <p className="mt-6 text-center text-xs text-text-secondary">
                     Already have an account?{" "}
-                    <Link to="/login" className="font-semibold text-blue-600">
+                    <Link to="/login" className="font-medium text-accent hover:underline">
                         Sign in
                     </Link>
                 </p>
