@@ -1,61 +1,23 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import {
     Activity,
     FileBarChart,
-    LogOut,
     PlusCircle,
 } from "lucide-react";
 
-import { useAppDispatch } from "../hooks/useAppDispatch";
-
-import { logout } from "../features/auth/authSlice";
-import { clearReadings } from "../features/readings/readingsSlice";
-import { clearReports } from "../features/reports/reportsSlice";
-
+import AppHeader from "../components/layout/AppHeader";
 import { useAppSelector } from "../hooks/useAppSelector";
 
 function DashboardPage() {
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-
     const user = useAppSelector((state) => state.auth.user);
 
-    const handleLogout = async () => {
-        await dispatch(logout());
-
-        dispatch(clearReadings());
-        dispatch(clearReports());
-
-        navigate("/login", { replace: true });
-    };
-
     return (
-        <main className="min-h-screen bg-slate-50">
+        <div className="min-h-screen bg-canvas">
+            <AppHeader />
 
-            {/* Navigation */}
-            <header className="border-b border-slate-200 bg-white">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
-                    <Link
-                        to="/dashboard"
-                        className="text-xl font-bold text-indigo-600"
-                    >
-                        Sweety
-                    </Link>
-
-                    <button
-                        type="button"
-                        onClick={handleLogout}
-                        className="flex items-center gap-2 rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-700 transition hover:bg-slate-100"
-                    >
-                        <LogOut size={17} />
-                        Logout
-                    </button>
-                </div>
-            </header>
-
-            {/* Dashboard */}
-            <div className="mx-auto max-w-6xl space-y-8 px-4 py-10 sm:px-6 lg:px-8">
+            {/* Dashboard content */}
+            <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
                 <section>
                     <p className="text-sm font-medium text-indigo-600">
                         YOUR HEALTH TRACKER
@@ -118,8 +80,8 @@ function DashboardPage() {
                         </Link>
                     </div>
                 </section>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }
 

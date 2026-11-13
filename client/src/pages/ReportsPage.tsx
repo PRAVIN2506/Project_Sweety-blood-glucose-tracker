@@ -16,6 +16,7 @@ import type {
 import ReportTypeTabs from "../features/reports/components/ReportTypeTabs";
 import ReportSummaryCards from "../features/reports/components/ReportSummaryCards";
 import ReportReadingsTable from "../features/reports/components/ReportReadingsTable";
+import AppHeader from "../components/layout/AppHeader";
 
 const reportLabels: Record<ReportType, string> = {
     daily: "Daily report",
@@ -97,9 +98,10 @@ function ReportsPage() {
     };
 
     return (
-        <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl space-y-8">
+        <div className="min-h-screen bg-canvas">
+            <AppHeader />
 
+            <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
                 {/* Header */}
                 <header>
                     <p className="text-sm font-medium text-indigo-600">
@@ -207,8 +209,8 @@ function ReportsPage() {
                         </div>
                     )}
                 </section>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }
 

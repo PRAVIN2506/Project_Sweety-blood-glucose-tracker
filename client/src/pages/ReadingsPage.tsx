@@ -18,6 +18,7 @@ import type {
 
 import ReadingForm from "../features/readings/components/ReadingForm";
 import ReadingTable from "../features/readings/components/ReadingTable";
+import AppHeader from "../components/layout/AppHeader";
 
 function ReadingsPage() {
     const dispatch = useAppDispatch();
@@ -123,9 +124,10 @@ function ReadingsPage() {
     };
 
     return (
-        <main className="min-h-screen bg-slate-50 px-4 py-8 sm:px-6 lg:px-8">
-            <div className="mx-auto max-w-6xl space-y-8">
+        <div className="min-h-screen bg-canvas">
+            <AppHeader />
 
+            <main className="mx-auto max-w-6xl space-y-8 px-4 py-8 sm:px-6 lg:px-8">
                 {/* Page header */}
                 <header className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
@@ -284,8 +286,8 @@ function ReadingsPage() {
                         />
                     )}
                 </section>
-            </div>
-        </main>
+            </main>
+        </div>
     );
 }
 
