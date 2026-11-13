@@ -1,30 +1,10 @@
 import prisma from "../config/database.js";
-
-const slotLabels = {
-    MORNING: "Morning",
-    AFTER_BREAKFAST: "After breakfast",
-    AFTER_LUNCH: "After lunch",
-    AFTER_DINNER: "After dinner",
-};
-
-const toDatabaseDate = (date) =>
-    new Date(`${date}T00:00:00.000Z`);
-
-const getDateString = (date) =>
-    date.toISOString().slice(0, 10);
-
-const getSlotLabel = (slot) =>
-    slotLabels[slot] || slot;
-
-const validateNotFutureDate = (date) => {
-    const today = new Date().toISOString().slice(0, 10);
-
-    if (date > today) {
-        const error = new Error("Date cannot be in the future.");
-        error.statusCode = 400;
-        throw error;
-    }
-};
+import {
+    toDatabaseDate,
+    getDateString,
+    getSlotLabel,
+    validateNotFutureDate,
+} from "../utils/date.utils.js";
 
 // Acquire a transaction-scoped PostgreSQL advisory lock.
 // The CTE returns an integer so Prisma can safely read the result.
@@ -102,10 +82,10 @@ const validateDuplicateSlot = async (
     }
 };
 
-export const createReading = async (userId, data) => {
+export const createReading = async (userId, data, timeZone = "UTC") => {
     const { date, slot, value } = data;
 
-    validateNotFutureDate(date);
+    validateNotFutureDate(date, timeZone);
 
     return prisma.$transaction(async (tx) => {
         await acquireDayLocks(tx, userId, [date]);
@@ -151,7 +131,7 @@ export const getReadingById = async (userId, readingId) => {
     return reading;
 };
 
-export const updateReading = async (userId, readingId, data) => {
+export const updateReading = async (userId, readingId, data, timeZone = "UTC") => {
     return prisma.$transaction(async (tx) => {
         await acquireAdvisoryLock(
             tx,
@@ -175,7 +155,7 @@ export const updateReading = async (userId, readingId, data) => {
         const newDate = data.date || oldDate;
         const newSlot = data.slot || existingReading.slot;
 
-        validateNotFutureDate(newDate);
+        validateNotFutureDate(newDate, timeZone);
 
         await acquireDayLocks(tx, userId, [oldDate, newDate]);
 

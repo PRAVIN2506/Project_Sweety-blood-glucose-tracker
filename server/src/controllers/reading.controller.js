@@ -5,12 +5,19 @@ import {
     updateReading,
     deleteReading,
 } from "../services/reading.service.js";
+import { validateTimeZoneHeader } from "../validators/reading.validator.js";
+
+const getTimeZone = (req) => {
+    return validateTimeZoneHeader(req.headers["x-time-zone"]);
+};
 
 export const addReading = async (req, res, next) => {
     try {
+        const timeZone = getTimeZone(req);
         const reading = await createReading(
             req.user.userId,
-            req.body
+            req.body,
+            timeZone
         );
 
         return res.status(201).json({
@@ -55,10 +62,12 @@ export const getReading = async (req, res, next) => {
 
 export const editReading = async (req, res, next) => {
     try {
+        const timeZone = getTimeZone(req);
         const reading = await updateReading(
             req.user.userId,
             req.params.id,
-            req.body
+            req.body,
+            timeZone
         );
 
         return res.status(200).json({

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { isValidTimeZone } from "../utils/date.utils.js";
 
 const readingSlots = [
     "MORNING",
@@ -48,3 +49,17 @@ export const updateReadingSchema = z.object({
         message: "At least one field must be provided.",
     }
 );
+
+export const validateTimeZoneHeader = (timeZone) => {
+    if (timeZone === undefined || timeZone === null || timeZone === "") {
+        return "UTC";
+    }
+
+    if (typeof timeZone !== "string" || !isValidTimeZone(timeZone.trim())) {
+        const error = new Error("Invalid timezone identifier.");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    return timeZone.trim();
+};
